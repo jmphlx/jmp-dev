@@ -239,7 +239,7 @@ async function getConfigurations() {
 window.addEventListener('message', (event) => {
   if (event.origin === 'http://localhost:3000'
     || event.origin === 'https://www.jmp.com'
-    || event.origin === 'https://main--dev--jmphlx.aem.live') {
+    || event.origin === 'https://main--jmp-dev--jmphlx.aem.live') {
     const singleInput = document.getElementById('page-path-input');
     if (event.data.length) {
       singleInput.value = event.data;
