@@ -167,6 +167,7 @@ async function doSearch(queryObject, replaceFlag) {
   const matching = [];
 
   let path = defaultpath;
+  console.log(pathPrefix);
 
   if (queryObject.scope.path) {
     const providedPath = queryObject.scope.path;
