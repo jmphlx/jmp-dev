@@ -43,10 +43,10 @@ export function getCookie(cname) {
 export const DA_CONSTANTS = {
   sourceUrl: 'https://admin.da.live/source',
   editUrl: 'https://da.live/edit#',
-  mainUrl: 'https://main--jmp-da--jmphlx.aem.live',
-  previewUrl: 'https://main--jmp-da--jmphlx.aem.page',
+  mainUrl: 'https://main--jmp-dev--jmphlx.aem.live',
+  previewUrl: 'https://main--jmp-dev--jmphlx.aem.page',
   org: 'jmphlx',
-  repo: 'jmp-da',
+  repo: 'jmp-dev',
 };
 
 export function replaceHtml(text) {
