@@ -140,7 +140,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
   font-size: var(--heading-font-size-xxl);
   line-height: 1.25;
-  margin-bottom: 3.2rem;
+  /* margin-bottom: 3.2rem; */
 }
 .h1-large {
   h1 {
@@ -641,6 +641,12 @@ div.blue-orange-gradient {
 div.teal-lightgreen-gradient {
   background: linear-gradient(45deg, #007481 15%, #9CCB3B 95%);
 }
+div.teal-lightteal-gradient {
+  background: linear-gradient(45deg, #007481 15%, #3EBDAC 95%);
+}
+div.green-lightgreen-gradient {
+  background: linear-gradient(45deg, #0D782F 15%, #9CCB3B 95%);
+}
 div.teal-purple-gradient {
   background: linear-gradient(45deg, #007481 15%, #643695 95%);
 }
@@ -691,6 +697,9 @@ div.dark-gray {
 }
 div.blue {
   background: var(--blue);
+}
+div.teal {
+  background: var(--teal);
 }
 div.dark-blue {
   background: var(--blueDark);
@@ -2287,8 +2296,21 @@ div.columns-25-25-25-25 {
     }
   }
 }
+div.columns-33-33-33 {
+  .layout-wrapper {
+    .group-1 {
+      width: 33%;
+    }
+    .group-2 {
+      width: 33%;
+    }
+    .group-3 {
+      width: 33%;
+    }
+  }
+}
 /* column breakpoints */
-div.columns-50-50, div.columns-25-75, div.columns-75-25, div.columns-30-70, div.columns-70-30, div.columns-60-40, div.columns-40-60, div.columns-66-33, div.columns-33-66, div.columns-20-80 , div.columns-80-20 {
+div.columns-50-50, div.columns-25-75, div.columns-75-25, div.columns-30-70, div.columns-70-30, div.columns-60-40, div.columns-40-60, div.columns-66-33, div.columns-33-66, div.columns-20-80 , div.columns-80-20, div.columns-33-33-33 {
   @media (width >=900px) {
     .layout-wrapper {
       column-gap: 64px !important;
@@ -2303,6 +2325,11 @@ div.columns-50-50, div.columns-25-75, div.columns-75-25, div.columns-30-70, div.
         margin-bottom: 1.6rem;
       }
       .group-2 {
+        display: block;
+        width: unset;
+        margin-bottom: 0;
+      }
+      .group-3 {
         display: block;
         width: unset;
         margin-bottom: 0;

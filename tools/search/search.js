@@ -2,7 +2,10 @@
 import DA_SDK from 'https://da.live/nx/utils/sdk.js';
 // eslint-disable-next-line import/no-unresolved
 import { crawl } from 'https://da.live/nx/public/utils/tree.js';
-import { DA_CONSTANTS } from '../../scripts/helper.js';
+import {
+  createVersion,
+  DA_CONSTANTS,
+} from '../../scripts/helper.js';
 import {
   ActionResult,
   addNewRow,
@@ -129,6 +132,7 @@ async function handleSearch(item, queryObject, matching, replaceFlag) {
         const matchingEntry = new SearchResult(item, filtered, classStyle, dom);
         matching.push(matchingEntry);
         if (replaceFlag) {
+          await createVersion(getPagePathFromFullUrl(item.path), token);
           doReplace(
             token,
             dom,
@@ -157,6 +161,7 @@ async function handleSearch(item, queryObject, matching, replaceFlag) {
       const matchingEntry = new SearchResult(item, elements, undefined, dom);
       matching.push(matchingEntry);
       if (replaceFlag) {
+        await createVersion(getPagePathFromFullUrl(item.path), token);
         doReplace(token, dom, elements, getPagePathFromFullUrl(item.path), queryObject, undefined);
       }
     }
@@ -279,6 +284,15 @@ function tryToPerformAction(queryObject) {
   return 'no option selected';
 }
 
+async function tryToCreatePageVersions() {
+  const uniqueDescription = `Search & Replace Version - ${crypto.randomUUID()}`;
+  // eslint-disable-next-line no-restricted-syntax
+  for (const result of window.searchResults) {
+    // eslint-disable-next-line no-await-in-loop
+    await createVersion(result.pagePath, token, uniqueDescription);
+  }
+}
+
 (async function init() {
   const sdk = await DA_SDK;
   actions = sdk.actions;
@@ -342,7 +356,8 @@ function tryToPerformAction(queryObject) {
       addActionEventListeners(queryObject);
 
       const advancedSubmitButton = document.querySelector('.advanced-submit');
-      advancedSubmitButton.addEventListener('click', () => {
+      advancedSubmitButton.addEventListener('click', async () => {
+        await tryToCreatePageVersions();
         const message = tryToPerformAction(queryObject);
         updateActionMessage(resultsContainer, message);
       });

@@ -42,6 +42,7 @@ export function getCookie(cname) {
 
 export const DA_CONSTANTS = {
   sourceUrl: 'https://admin.da.live/source',
+  versionUrl: 'https://admin.da.live/versionsource',
   editUrl: 'https://da.live/edit#',
   mainUrl: 'https://main--jmp-dev--jmphlx.aem.live',
   previewUrl: 'https://main--jmp-dev--jmphlx.aem.page',
@@ -88,5 +89,42 @@ export async function saveToDa(text, pathname, token) {
   } catch {
     console.log(`Couldn't save ${pathname}`);
     return null;
+  }
+}
+
+export async function createVersion(path, token, description = 'Search & Replace Version') {
+  const cleanPath = `${DA_CONSTANTS.org}/${DA_CONSTANTS.repo}${path}`;
+  const url = `${DA_CONSTANTS.versionUrl}/${cleanPath}.html`;
+
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        label: description,
+      }),
+    });
+
+    if (response.ok) {
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        try {
+          const result = await response.json();
+          return result;
+        } catch (jsonError) {
+          return { success: true, status: response.status };
+        }
+      } else {
+        return { success: true, status: response.status };
+      }
+    } else {
+      const errorText = await response.text();
+      return { success: false, status: response.status, error: errorText };
+    }
+  } catch (e) {
+    return { success: false, status: null, error: e.getMessage() };
   }
 }
