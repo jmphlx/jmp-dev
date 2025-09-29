@@ -1,4 +1,8 @@
-import { createTag, DA_CONSTANTS } from '../../scripts/helper.js';
+import {
+  createTag,
+  DA_CONSTANTS,
+  getPublishStatus,
+} from '../../scripts/helper.js';
 import { escapeRegExp } from './replace.js';
 
 const DEFAULT_PROP_LIST = ['style', 'options'];
@@ -40,7 +44,27 @@ function updateSearchTerms(searchInputField, category, termValue) {
   }
 }
 
+function addCheckboxEventListeners(searchInputField) {
+  const emptyCheckbox = document.getElementById('emptyValue');
+  const emptyRegex = /(\s?\$empty)/g;
+  emptyCheckbox.addEventListener('change', () => {
+    const currentValue = searchInputField.value;
+    const emptyCheckboxVal = emptyCheckbox.checked;
+    if (emptyCheckboxVal && !currentValue) {
+      searchInputField.value = '$empty';
+    } else if (emptyCheckboxVal && currentValue) {
+      searchInputField.value += ' $empty';
+    } else if (!emptyCheckboxVal && currentValue.match(emptyRegex)) {
+      searchInputField.value = currentValue.replace(emptyRegex, '');
+    }
+  });
+}
+
 function buildParentDropdown(dropdown, jsonData, type) {
+  const defaultElement = createTag('option', {
+    value: '',
+  }, 'Select');
+  dropdown.append(defaultElement);
   jsonData.forEach((option) => {
     const optionValue = option[type].toLowerCase();
     if (optionValue !== 'default') {
@@ -50,6 +74,7 @@ function buildParentDropdown(dropdown, jsonData, type) {
       dropdown.append(optionElement);
     }
   });
+  dropdown.value = '';
 }
 
 function buildPropertiesDropdown(dropdown, nodeName) {
@@ -57,9 +82,7 @@ function buildPropertiesDropdown(dropdown, nodeName) {
   const shadowRoot = dropdown.shadowRoot;
   const currOptions = shadowRoot.querySelectorAll('option');
   currOptions?.forEach((opt) => {
-    if (opt.value) {
-      opt.remove();
-    }
+    opt.remove();
   });
   let propertyList;
   window.blockProperties.forEach((block) => {
@@ -70,6 +93,11 @@ function buildPropertiesDropdown(dropdown, nodeName) {
   if (!propertyList || !propertyList[0].length) {
     propertyList = DEFAULT_PROP_LIST;
   }
+  const defaultElement = createTag('option', {
+    value: '',
+    class: 'prop-option',
+  }, 'Select');
+  dropdown.append(defaultElement);
   propertyList?.forEach((prop) => {
     const optionValue = prop.trim();
     const optionElement = createTag('option', {
@@ -85,9 +113,7 @@ function buildAttributeDropdown(dropdown, nodeName) {
   const shadowRoot = dropdown.shadowRoot;
   const currOptions = shadowRoot.querySelectorAll('option');
   currOptions?.forEach((opt) => {
-    if (opt.value) {
-      opt.remove();
-    }
+    opt.remove();
   });
   let attributeList;
   window.tagAttribute.forEach((tag) => {
@@ -98,6 +124,11 @@ function buildAttributeDropdown(dropdown, nodeName) {
   if (!attributeList || !attributeList[0].length) {
     attributeList = window.tagAttribute[0].attribute.split(',');
   }
+  const defaultElement = createTag('option', {
+    value: '',
+    class: 'prop-option',
+  }, 'Select');
+  dropdown.append(defaultElement);
   attributeList?.forEach((attr) => {
     const optionValue = attr.trim();
     const optionElement = createTag('option', {
@@ -108,7 +139,7 @@ function buildAttributeDropdown(dropdown, nodeName) {
   });
 }
 
-async function populateDropdowns(searchInputField) {
+function populateDropdowns(searchInputField) {
   // Do Block
   const blockDropdown = document.querySelector('[name="block_scope"]');
   buildParentDropdown(blockDropdown, window.blockProperties, 'name');
@@ -139,6 +170,11 @@ async function populateDropdowns(searchInputField) {
   attributeDropdown.addEventListener('change', () => {
     updateSearchTerms(searchInputField, 'attribute', attributeDropdown.value);
   });
+
+  const statusDropdown = document.getElementById('publish_scope');
+  statusDropdown.addEventListener('change', () => {
+    updateSearchTerms(searchInputField, 'status', statusDropdown.value);
+  });
 }
 
 function addLoadingAction(resultsContainer, message) {
@@ -167,18 +203,9 @@ function createResultItem(item, highlightTerm) {
     class: 'page-path',
   }, `${item.path}`);
 
-  const publishStatus = item.publishStatus;
-  let publishColor;
-  if (publishStatus >= 200 && publishStatus < 300) {
-    publishColor = 'publish-status-green';
-  } else if (publishStatus >= 400 && publishStatus < 500) {
-    publishColor = 'publish-status-red';
-  } else {
-    publishColor = 'publish-status-yellow';
-  }
-
+  const publishStatus = getPublishStatus(item.publishStatus);
   const publishIcon = createTag('div', {
-    class: `statusCircle ${publishColor}`,
+    class: `statusCircle status-${publishStatus}`,
   });
 
   const link = createTag('a', {
@@ -278,14 +305,17 @@ function writeOutResults(results, queryString, queryObject, duration, replaceFla
   const resultsData = document.createElement('div');
 
   const urlList = [];
+  const publishedUrlList = [];
 
   const resultsList = document.createElement('div');
   resultsList.classList.add('results-list');
   results.forEach((item) => {
-    console.log(item.classStyle);
     const resultItem = createResultItem(item, highlightTerm);
     resultsList.append(resultItem);
     urlList.push(`${DA_CONSTANTS.previewUrl}${item.pagePath}`);
+    if (getPublishStatus(item.publishStatus) === 'published') {
+      publishedUrlList.push(`${DA_CONSTANTS.previewUrl}${item.pagePath}`);
+    }
   });
 
   const searchSummary = document.createElement('span');
@@ -300,14 +330,23 @@ function writeOutResults(results, queryString, queryObject, duration, replaceFla
     id: 'copy-to-clipboard',
   });
 
-  const copyButton = createTag('p', {
+  const copyAllButton = createTag('p', {
     class: 'button-container',
   });
-  copyButton.textContent = 'Copy Result URLs To Clipboard';
-  copyContainer.append(copyButton);
-  copyContainer.addEventListener('click', () => {
-    copyToClipboard(copyButton, urlList.join('\n'), 'Copied');
+  copyAllButton.textContent = 'Copy All Result URLs To Clipboard';
+  copyAllButton.addEventListener('click', () => {
+    copyToClipboard(copyAllButton, urlList.join('\n'), 'Copied');
   });
+  copyContainer.append(copyAllButton);
+
+  const copyPublishedButton = createTag('p', {
+    class: 'button-container',
+  });
+  copyPublishedButton.textContent = 'Copy Published Result URLs To Clipboard';
+  copyPublishedButton.addEventListener('click', () => {
+    copyToClipboard(copyPublishedButton, publishedUrlList.join('\n'), 'Copied');
+  });
+  copyContainer.append(copyPublishedButton);
 
   const bulkEditorButton = createTag('a', {
     class: 'button',
@@ -438,6 +477,7 @@ export {
   addActionEventListeners,
   addLoadingAction,
   addLoadingSearch,
+  addCheckboxEventListeners,
   clearResults,
   closeAdvancedSections,
   constructPageViewer,

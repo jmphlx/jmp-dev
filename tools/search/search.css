@@ -26,15 +26,9 @@
         sl-select {
           width: 120px;
           border-radius: 5px;
-          /* #shadow-root {
-            div.sl-inputfield {
-              div.sl-inputfield-select-wrapper {
-                select {
-                  padding: 0 24px 0 12px !important;
-                }
-              }
-            }
-          } */
+        }
+        input[type=checkbox] {
+          margin-bottom: 0rem;
         }
       }
     }
@@ -256,14 +250,17 @@ dialog {
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    &.publish-status-green {
+    &.status-published {
       background-color: green;
     }
-    &.publish-status-yellow {
+    &.status-previewed {
       background-color: yellow;
     }
-    &.publish-status-red {
-      background-color: red;
+    &.status-unpublished {
+      background-color: gray;
+    }
+    &.status-error {
+      border: 2px solid black;
     }
   }
   &.open {
