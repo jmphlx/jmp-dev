@@ -44,7 +44,7 @@ export const DA_CONSTANTS = {
   sourceUrl: 'https://admin.da.live/source',
   versionUrl: 'https://admin.da.live/versionsource',
   editUrl: 'https://da.live/edit#',
-  aemUrl: 'https://admin.hlx.page/stattus',
+  aemUrl: 'https://admin.hlx.page/status',
   mainUrl: 'https://main--jmp-dev--jmphlx.aem.live',
   previewUrl: 'https://main--jmp-dev--jmphlx.aem.page',
   org: 'jmphlx',
