@@ -483,6 +483,7 @@ function tryToCreatePageVersions() {
   const sdk = await DA_SDK;
   actions = sdk.actions;
   token = sdk.token;
+  console.log(token);
 
   constructPageViewer();
 
