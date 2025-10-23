@@ -228,7 +228,6 @@ function convertToFilter(row) {
         break;
     }
   }
-  console.log(updatedRowValue);
   if (updatedRowValue !== undefined) {
     const actualRowVal = row.children[1]?.children[0];
     actualRowVal.textContent = updatedRowValue;
