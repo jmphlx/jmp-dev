@@ -119,18 +119,6 @@ indices:
         select: head > meta[name="application"]
         value: |
           attribute(el, "content")
-      displayLabel:
-        select: head > meta[name="displaylabel"]
-        value: |
-          attribute(el, "content")
-      displayImage:
-        select: head > meta[name="displayimage"]
-        value: |
-          attribute(el, "content")
-      blogTopics:
-        select: head > meta[name="blogtopics"]
-        value: |
-          attribute(el, "content")
       tags:
         select: head > meta[property="article:tag"]
         values: |
