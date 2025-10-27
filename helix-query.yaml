@@ -119,7 +119,3 @@ indices:
         select: head > meta[name="application"]
         value: |
           attribute(el, "content")
-      tags:
-        select: head > meta[property="article:tag"]
-        values: |
-          attribute(el, "content")
