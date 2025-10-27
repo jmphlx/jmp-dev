@@ -9,7 +9,7 @@ indices:
       - /en/drafts/**
       - /en/sandbox/**
       - /en/fragments/**
-    target: /jmp-en.json
+    target: /jmp-en-2.json
     properties:
       author:
         select: head > meta[name="author"]
