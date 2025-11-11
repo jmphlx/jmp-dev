@@ -1,4 +1,4 @@
 mountpoints:
   /:
-    url: https://content.da.live/jmphlx/jmp-develop/
+    url: https://content.da.live/jmphlx/jmp-dev/
     type: markup
