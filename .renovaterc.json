@@ -1,8 +1,75 @@
 {
-  "extends": ["config:recommended"],
-  "packageRules": [{
-      "matchDepTypes": ["devDependencies"],
-      "labels": ["ignore-psi-check"], 
-      "automerge": true
-  }]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "timezone": "America/New_York",
+  "schedule": [
+    "before 6am on monday"
+  ],
+  "labels": [
+    "dependencies"
+  ],
+  "automerge": false,
+  "dependencyDashboard": true,
+  "customManagers": [
+    {
+      "description": "Third-party libraries loaded from CDNs in block and script source",
+      "customType": "regex",
+      "managerFilePatterns": [
+        "/\\.(js|html)$/"
+      ],
+      "matchStrings": [
+        "https://cdn\\.jsdelivr\\.net/npm/(?<depName>[a-z0-9._-]+)@(?<currentValue>[0-9][^/\"'?]*)",
+        "https://ajax\\.googleapis\\.com/ajax/libs/(?<depName>[a-z0-9._-]+)/(?<currentValue>[0-9][^/\"']*)"
+      ],
+      "datasourceTemplate": "npm",
+      "versioningTemplate": "npm"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Majors never open a PR unprompted; approve them on the dashboard",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "Dev-only tooling, never reaches site visitors",
+      "matchManagers": [
+        "npm",
+        "github-actions"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "dev tooling",
+      "semanticCommitType": "chore"
+    },
+    {
+      "description": "Libraries that ship to the live site",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "site runtime libraries",
+      "semanticCommitType": "fix"
+    }
+  ],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "schedule": [
+      "at any time"
+    ],
+    "dependencyDashboardApproval": false,
+    "groupName": null,
+    "addLabels": [
+      "security"
+    ]
+  }
 }
