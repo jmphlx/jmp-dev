@@ -11,6 +11,9 @@
   "semanticCommits": "enabled",
   "automerge": false,
   "dependencyDashboard": true,
+  "major": {
+    "dependencyDashboardApproval": true
+  },
   "customManagers": [
     {
       "description": "Third-party libraries loaded from CDNs in block and script source",
@@ -27,13 +30,6 @@
     }
   ],
   "packageRules": [
-    {
-      "description": "Majors never open a PR unprompted; approve them on the dashboard",
-      "matchUpdateTypes": [
-        "major"
-      ],
-      "dependencyDashboardApproval": true
-    },
     {
       "description": "Dev-only tooling, never reaches site visitors",
       "matchManagers": [
