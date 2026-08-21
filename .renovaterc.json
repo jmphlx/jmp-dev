@@ -11,7 +11,6 @@
   "semanticCommits": "enabled",
   "automerge": false,
   "dependencyDashboard": true,
-  "dependencyDashboardApproval": false,
   "major": {
     "dependencyDashboardApproval": true
   },
