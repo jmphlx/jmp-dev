@@ -58,6 +58,13 @@
       ],
       "groupName": "site runtime libraries",
       "semanticCommitType": "fix"
+    },
+    {
+      "description": "Vendored copy of @adobe/aem-experimentation; update by re-vendoring from upstream, not by bumping its internals",
+      "matchFileNames": [
+        "plugins/**"
+      ],
+      "enabled": false
     }
   ],
   "vulnerabilityAlerts": {
