@@ -1,15 +1,14 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "TESTING: top-level schedule intentionally removed so Renovate runs on its next pass. Restore \"schedule\": [\"before 6am on monday\"] once the first grouped PRs are verified.",
   "extends": [
     "config:recommended"
   ],
   "timezone": "America/New_York",
-  "schedule": [
-    "before 6am on monday"
-  ],
   "labels": [
-    "dependencies"
+    "Dependencies"
   ],
+  "semanticCommits": "enabled",
   "automerge": false,
   "dependencyDashboard": true,
   "customManagers": [
@@ -69,7 +68,7 @@
     "dependencyDashboardApproval": false,
     "groupName": null,
     "addLabels": [
-      "security"
+      "Security"
     ]
   }
 }
