@@ -56,6 +56,25 @@
       "semanticCommitType": "fix"
     },
     {
+      "description": "Dev-only tooling never reaches visitors, so a PageSpeed run on it is meaningless",
+      "matchManagers": [
+        "npm",
+        "github-actions"
+      ],
+      "addLabels": [
+        "ignore-psi-check"
+      ]
+    },
+    {
+      "description": "These ship to browsers, so give aem-psi-check a real preview URL to measure",
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "prBodyNotes": [
+        "URL for testing:\n\n- https://{{{replace '/' '-' branchName}}}--jmp-dev--jmphlx.aem.page/"
+      ]
+    },
+    {
       "description": "Vendored copy of @adobe/aem-experimentation; update by re-vendoring from upstream, not by bumping its internals",
       "matchFileNames": [
         "plugins/**"
