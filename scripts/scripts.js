@@ -415,7 +415,7 @@ function addMathJax() {
   document.head.appendChild(mathJaxConfig);
 
   const mathJaxScript = createTag('script', {
-    src: 'https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-MML-AM_CHTML',
+    src: 'https://cdn.jsdelivr.net/npm/mathjax@4/MathJax.js?config=TeX-MML-AM_CHTML',
   });
   document.head.appendChild(mathJaxScript);
 }
