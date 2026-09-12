@@ -426,7 +426,7 @@ export default async function decorate(block) {
 
   const includesDateProperty = checkForDateProperties(config.displayProperties);
   if (includesDateProperty) {
-    await loadScript('https://cdn.jsdelivr.net/npm/date-fns@4.1.0/cdn.min.js');
+    await loadScript('https://cdn.jsdelivr.net/npm/date-fns@4.4.0/cdn.min.js');
   }
 
   const includesTagProperty = checkForTagProperties(config.displayProperties);
